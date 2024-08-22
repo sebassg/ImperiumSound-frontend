@@ -1,46 +1,40 @@
-// Formulario.tsx
-import React, { useState } from "react";
-import "./formulario.css"; // Asegúrate de que esta ruta sea correcta
+import React, { useState } from 'react';
+import { useAuth } from '../hooks/useAuth';
 
-export function Formulario() {
-  const [nombre, setNombre] = useState<string>("");
-  const [contrasena, setContrasena] = useState<string>("");
+const LoginForm: React.FC = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const { login } = useAuth();
 
-  const manejarSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Nombre:", nombre);
-    console.log("Contraseña:", contrasena);
+    await login(username, password);
   };
 
   return (
-    <>
-   
-
-      <form className="formulario" onSubmit={manejarSubmit}>
-        <h1>Iniciar Sesión</h1>
-        <div>
-          <p>Correo*</p>
-          <label htmlFor="nombre"></label>
-          <input
-            id="nombre"
-            type="text"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-            />
-        </div>
-        <div>
-          <label htmlFor="contrasena"></label>
-          <p>Contraseña *</p>
-          <input
-            id="contrasena"
-            type="password"
-            value={contrasena}
-            onChange={(e) => setContrasena(e.target.value)}
-            />
-        </div>
-        <button type="submit">Iniciar sesión</button>
-      </form>
-           
-    </>
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label htmlFor="username">Username:</label>
+        <input
+          type="text"
+          id="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+      </div>
+      <div>
+        <label htmlFor="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </div>
+      <button type="submit">Login</button>
+    </form>
   );
-}
+};
+
+export default LoginForm;
+
